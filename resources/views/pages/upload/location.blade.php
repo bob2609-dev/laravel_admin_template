@@ -3,10 +3,10 @@
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 
         {{-- upload form --}}
-        <x-upload.form />
+        <x-upload.form  :test="$test" />
 
         <div class="sm:flex sm:justify-between sm:items-center mb-8 hidden">
- 
+
 
         </div>
 

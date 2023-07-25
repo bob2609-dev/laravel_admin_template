@@ -16,7 +16,7 @@ class LocationController extends Controller
     public function index()
     {
         //
-        // $dataFeed = new DataFeed();
+        $dataFeed = new DataFeed();
 
         $test = 'MY TEST';
         return view('pages.upload.location')->with('test',$test);

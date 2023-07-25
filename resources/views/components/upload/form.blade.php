@@ -1,6 +1,6 @@
 <div class="flex flex-col col-span-full sm:col-span-12 bg-white shadow-lg rounded-md border border-slate-200">
     <header class="px-5 py-4 border-b border-slate-100">
-        <h2 class="font-semibold text-slate-800">Relocation Data Upload Form</h2>
+        <h2 class="font-semibold text-slate-800 ">Relocation Data Upload Form</h2>
         <span class=" text-slate-500 text-xs font-extralight italic">Upload using excel file <span
                 class="text-slate-400 text-xs font-extralight italic">(accepted formats:.csv, .xlsx)</span></span>
 
@@ -13,6 +13,7 @@
                     class="border border-slate-300 w-full focus:border-1  focus:border-slate-500 focus:outline-none p-2 rounded-md">
             </form>
             <div>
+                {{$test}}
                 <label>
                     <input type="radio" name="options" value="test">
                     Test
