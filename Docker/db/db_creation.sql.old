@@ -1,0 +1,328 @@
+create database if not exists relocation;
+
+use relocation;
+
+drop table if exists datafeeds;
+
+drop table if exists failed_jobs;
+
+drop table if exists locations;
+
+drop table if exists main_valuations;
+
+drop table if exists migrations;
+
+drop table if exists password_resets;
+
+drop table if exists personal_access_tokens;
+
+drop table if exists sec_buildings;
+
+drop table if exists sessions;
+
+drop table if exists team_invitations;
+
+drop table if exists team_user;
+
+drop table if exists teams;
+
+drop table if exists users;
+
+
+
+
+-- datafeeds: table
+CREATE TABLE `datafeeds` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `label` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data` double(10,2) DEFAULT NULL,
+  `dataset_name` tinyint DEFAULT NULL,
+  `data_type` tinyint NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=326 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- failed_jobs: table
+CREATE TABLE `failed_jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- locations: table
+CREATE TABLE `locations` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `owner_firstname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner_lastname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner_id_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `owner_id_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `owner_mobile_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `region` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `district` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ward` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `longitude` decimal(10,7) NOT NULL,
+  `latitude` decimal(10,7) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- main_valuations: table
+CREATE TABLE `main_valuations` (
+  `uuid` varchar(100) DEFAULT NULL,
+  `PAP_ID` varchar(100) DEFAULT NULL,
+  `today` varchar(100) DEFAULT NULL,
+  `x1a_mmiliki` varchar(100) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  `gender` varchar(100) DEFAULT NULL,
+  `pap_id_original` varchar(100) DEFAULT NULL,
+  `mobile` varchar(100) DEFAULT NULL,
+  `municipality` varchar(100) DEFAULT NULL,
+  `ward` varchar(100) DEFAULT NULL,
+  `mtaa_street` varchar(100) DEFAULT NULL,
+  `x1b_anuani` varchar(100) DEFAULT NULL,
+  `maelezo_12` longtext,
+  `matumizi_13` longtext,
+  `building_usage` varchar(100) DEFAULT NULL,
+  `building_type` varchar(100) DEFAULT NULL,
+  `nos_building` varchar(100) DEFAULT NULL,
+  `nos_sec_building` varchar(100) DEFAULT NULL,
+  `sec_build_size_sqm` varchar(100) DEFAULT NULL,
+  `nos_multistorey` varchar(100) DEFAULT NULL,
+  `multi_st_size_sqm` varchar(100) DEFAULT NULL,
+  `multi_storey_value` varchar(100) DEFAULT NULL,
+  `x2_maelezo_ya_jumla_ya_mali` varchar(100) DEFAULT NULL,
+  `x3a_paa` varchar(100) DEFAULT NULL,
+  `x3a_other_specify` longtext,
+  `x3b_kuta` varchar(100) DEFAULT NULL,
+  `x3b_other_specify` longtext,
+  `x3c_dari` varchar(100) DEFAULT NULL,
+  `x3c_other_specify` varchar(100) DEFAULT NULL,
+  `x3d_madirisha` longtext,
+  `x3d_other_specify` varchar(100) DEFAULT NULL,
+  `x3e_milango` varchar(100) DEFAULT NULL,
+  `x3e_other_specify` varchar(100) DEFAULT NULL,
+  `x3f_sakafu` varchar(100) DEFAULT NULL,
+  `x3f_other_specify` varchar(100) DEFAULT NULL,
+  `sketch_mchoro_wa_jengo` varchar(100) DEFAULT NULL,
+  `sketch_mchoro_wa_jengo_url` varchar(100) DEFAULT NULL,
+  `building_area_calculations` longtext,
+  `building_area` varchar(100) DEFAULT NULL,
+  `x4_je_kuna_mazao` varchar(100) DEFAULT NULL,
+  `x3g_vyumba` longtext,
+  `idadi_ya_vyumba_makazi` varchar(100) DEFAULT NULL,
+  `idadi_ya_vyumba_biashara` varchar(100) DEFAULT NULL,
+  `maendelezo_mengine_100` longtext,
+  `matumizi_makazi_biashara_kadirio_la_kodi_ya_jengo_101` longtext,
+  `matumizi_makazi_kadirio_la_kodi_ya_jengo` longtext,
+  `matumizi_biashara_kadirio_la_kodi_ya_jengo` longtext,
+  `wastan_wa_kodi_kwa_mwezi` varchar(100) DEFAULT NULL,
+  `crop_1` varchar(100) DEFAULT NULL,
+  `no_crop_1` varchar(100) DEFAULT NULL,
+  `crop_1_growth_rate` varchar(100) DEFAULT NULL,
+  `Crop1_rate` varchar(100) DEFAULT NULL,
+  `Crop1_Value` varchar(100) DEFAULT NULL,
+  `crop_2` varchar(100) DEFAULT NULL,
+  `no_crop_2` varchar(100) DEFAULT NULL,
+  `crop2_growth_rate` varchar(100) DEFAULT NULL,
+  `_Crop2_rate_` varchar(100) DEFAULT NULL,
+  `Crop2_Value` varchar(100) DEFAULT NULL,
+  `crop_3` varchar(100) DEFAULT NULL,
+  `no_crop_3` varchar(100) DEFAULT NULL,
+  `crop3_growth_rate` varchar(100) DEFAULT NULL,
+  `_Crop3_rate_` varchar(100) DEFAULT NULL,
+  `Crop3_Value` varchar(100) DEFAULT NULL,
+  `crop_4` varchar(100) DEFAULT NULL,
+  `no_crop_4` varchar(100) DEFAULT NULL,
+  `crop_4_growth_rate` varchar(100) DEFAULT NULL,
+  `Crop4_rate` varchar(100) DEFAULT NULL,
+  `Crop4_Value` varchar(100) DEFAULT NULL,
+  `crop_5` varchar(100) DEFAULT NULL,
+  `no_crop_5` varchar(100) DEFAULT NULL,
+  `crop_5_growth_rate` varchar(100) DEFAULT NULL,
+  `Crop5_rate` varchar(100) DEFAULT NULL,
+  `Crop5_Value` varchar(100) DEFAULT NULL,
+  `crop_6` varchar(100) DEFAULT NULL,
+  `no_crop_6` varchar(100) DEFAULT NULL,
+  `crop_6_growth_rate` varchar(100) DEFAULT NULL,
+  `Crop6_rate` varchar(100) DEFAULT NULL,
+  `Crop6_Value` varchar(100) DEFAULT NULL,
+  `crop_7` varchar(100) DEFAULT NULL,
+  `no_crop_7` varchar(100) DEFAULT NULL,
+  `crop_7growth_rate` varchar(100) DEFAULT NULL,
+  `Crop7_rate` varchar(100) DEFAULT NULL,
+  `Crop7_Value` varchar(100) DEFAULT NULL,
+  `crop_8` varchar(100) DEFAULT NULL,
+  `no_crop_8` varchar(100) DEFAULT NULL,
+  `crop_8_growth_rate` varchar(100) DEFAULT NULL,
+  `Crop8_rate` varchar(100) DEFAULT NULL,
+  `Crop8_Value` varchar(100) DEFAULT NULL,
+  `Total_Value` varchar(100) DEFAULT NULL,
+  `x4b_ukubwa_wa_shamba_eneo_kadirio_sqm` varchar(100) DEFAULT NULL,
+  `owner_picture_front_147` longtext,
+  `owner_picture_front_148` longtext,
+  `picha_ya_mmiliki_kwa_mbele_url` longtext,
+  `picha_ya_mmiliki_kwa_pembeni_url` longtext,
+  `reasons_for_adjustment` longtext,
+  `derived_adjsted_rate` varchar(100) DEFAULT NULL,
+  `adopted_price` varchar(100) DEFAULT NULL,
+  `adjustments_and_workings_percent` varchar(100) DEFAULT NULL,
+  `jina_la_mmiliki` varchar(100) DEFAULT NULL,
+  `mobile_no` varchar(100) DEFAULT NULL,
+  `saini_ya_mmiliki_158` varchar(100) DEFAULT NULL,
+  `saini_ya_mmiliki_url_159` longtext,
+  `main_building_value` varchar(100) DEFAULT NULL,
+  `secondary_build_value` varchar(100) DEFAULT NULL,
+  `Total_Building_Value` varchar(100) DEFAULT NULL,
+  `accomodation_allowance` varchar(100) DEFAULT NULL,
+  `transport_allowance` varchar(100) DEFAULT NULL,
+  `crop_value_Final` varchar(100) DEFAULT NULL,
+  `land_size_sqm` varchar(100) DEFAULT NULL,
+  `land_rate_TZS` varchar(100) DEFAULT NULL,
+  `land_value_166` varchar(100) DEFAULT NULL,
+  `disturbance_allowance` varchar(100) DEFAULT NULL,
+  `total_compensation` varchar(100) DEFAULT NULL,
+  `jina_la_mmiliki_pap_name` varchar(100) DEFAULT NULL,
+  `mobile_pap_phone` varchar(100) DEFAULT NULL,
+  `saini_ya_mmiliki_173` varchar(100) DEFAULT NULL,
+  `saini_ya_mmiliki_url_174` longtext,
+  `jina_la_mthamini` varchar(100) DEFAULT NULL,
+  `saini_ya_mthamini` varchar(100) DEFAULT NULL,
+  `saini_ya_mthamini_url` longtext,
+  `id` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- migrations: table
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- password_resets: table
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- No native definition for element: password_resets_email_index (index)
+
+-- personal_access_tokens: table
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- No native definition for element: personal_access_tokens_tokenable_type_tokenable_id_index (index)
+
+-- sec_buildings: table
+CREATE TABLE `sec_buildings` (
+  `uuid` varchar(255) DEFAULT NULL,
+  `HESABU_ZA_ENEO` varchar(255) DEFAULT NULL,
+  `ENEO_LA_NYUMBA_RFA` varchar(255) DEFAULT NULL,
+  `6b_Ukubwa_wa_eneo_sqm` varchar(255) DEFAULT NULL,
+  `Adopted_Price` varchar(255) DEFAULT NULL,
+  `Adjust_workings_percent` varchar(255) DEFAULT NULL,
+  `reasons_for_adjustment` varchar(255) DEFAULT NULL,
+  `Derived_Adjsted_Rate` varchar(255) DEFAULT NULL,
+  `Building_value` varchar(255) DEFAULT NULL,
+  `submission__uuid` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+
+-- sessions: table
+CREATE TABLE `sessions` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  `payload` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sessions_user_id_index` (`user_id`),
+  KEY `sessions_last_activity_index` (`last_activity`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- No native definition for element: sessions_user_id_index (index)
+
+-- No native definition for element: sessions_last_activity_index (index)
+
+-- team_invitations: table
+CREATE TABLE `team_invitations` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `team_id` bigint unsigned NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `team_invitations_team_id_email_unique` (`team_id`,`email`),
+  CONSTRAINT `team_invitations_team_id_foreign` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- team_user: table
+CREATE TABLE `team_user` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `team_id` bigint unsigned NOT NULL,
+  `user_id` bigint unsigned NOT NULL,
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `team_user_team_id_user_id_unique` (`team_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- teams: table
+CREATE TABLE `teams` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `personal_team` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `teams_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- No native definition for element: teams_user_id_index (index)
+
+-- users: table
+CREATE TABLE `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `two_factor_secret` text COLLATE utf8mb4_unicode_ci,
+  `two_factor_recovery_codes` text COLLATE utf8mb4_unicode_ci,
+  `two_factor_confirmed_at` timestamp NULL DEFAULT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `current_team_id` bigint unsigned DEFAULT NULL,
+  `profile_photo_path` varchar(2048) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

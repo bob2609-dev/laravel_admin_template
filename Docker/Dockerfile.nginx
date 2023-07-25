@@ -1,0 +1,25 @@
+FROM nginx:latest
+
+#COPY ./nginx/conf.d/laravel.conf /etc/nginx/conf.d/default.conf
+# COPY ./nginx/conf.d/laravel.conf.bak /etc/nginx/conf.d/laravel.conf.bak2
+# COPY ./nginx/conf.d/ /etc/nginx/sites-available/
+COPY ./nginx/conf.d/ /etc/nginx/conf.d/
+
+# RUN rm -rf /etc/nginx/conf.d/
+# RUN mkdir ./etc/nginx/conf.d/
+# RUN touch /etc/nginx/conf.d/test.conf
+# RUN touch /etc/nginx/conf.d/test.conf
+
+
+
+EXPOSE 80/tcp
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"];
+
+
+
+# RUN cd /var/www/html/mysql/
+
+# CMD ["sh", "/var/www/html/mysql/db_restore.sh"];
+# CMD  ["sh", "/var/www/html/mysql/db_restore.sh"]
+
+# RUN mysql -u root -p doa_db2 <  /var/www/html/mysql/doa_db_bak.sql

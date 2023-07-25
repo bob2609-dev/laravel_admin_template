@@ -1,0 +1,260 @@
+
+upstream web_backend {
+    server 172.30.0.2;
+
+    keepalive 16;
+}
+
+
+server {
+
+    ssi off;
+    server_tokens off;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+
+    listen 80;
+    index index.php index.html;
+    # server_name "server-test.dv"
+
+    server_name localhost;
+    error_log /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+    # root /var/www/html/relocationApp/public;
+    # add_header Content-Security-Policy "default-src 'self'; font-src *;img-src * data:; script-src *; style-src *";
+    # add_header X-Frame-Options "SAMEORIGIN";
+
+    # include /etc/nginx/conf.d/headers.conf;
+
+
+
+    location ~ /\.ht { deny all; ssi off;
+        include /etc/nginx/conf.d/headers.conf;
+
+        proxy_hide_header X-Powered-By;
+        proxy_hide_header Server;
+        proxy_cookie_path /* "/; SameSite=None; HTTPOnly; Secure";
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        proxy_cookie_path / "/; HTTPOnly; Secure";
+
+
+    }
+
+    location ~ /\.xml {
+        deny all;
+        ssi off;
+        include /etc/nginx/conf.d/headers.conf;
+
+        proxy_hide_header X-Powered-By;
+        proxy_hide_header Server;
+        proxy_cookie_path / "/; SameSite=None; HTTPOnly; Secure";
+
+    }
+
+    if ($request_method ~ ^(PATCH|TRACE)$) {
+        return 405;
+    }
+
+    location / {
+        ssi off;
+        try_files $uri $uri/ /index.php?$query_string;
+        include /etc/nginx/conf.d/headers.conf;
+        proxy_cookie_path /* "/; SameSite=None; HTTPOnly; Secure";
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        proxy_cookie_path / "/; HTTPOnly; Secure";
+
+
+    }
+
+
+    location /storage {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+
+    location ~ \.php$ {
+        ssi off;
+        include /etc/nginx/conf.d/headers.conf;
+
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass 172.30.0.2:9901;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        proxy_cookie_path / "/; HTTPOnly; Secure;HttpOnly; SameSite=strict";
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        proxy_cookie_path / "/; HTTPOnly; Secure";
+
+
+
+
+    }
+    include /etc/nginx/conf.d/headers.conf;
+
+    # add_header Content-Security-Policy "default-src 'self';" always;
+}
+
+
+
+
+
+
+server {
+    # listen 443;
+    listen 443 ssl http2 default_server;
+    # listen [::]:443 ssl http2 default_server;
+
+    server_tokens off;
+
+    index index.php index.html;
+    server_name localhost;
+    error_log /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+    root /var/www/html/relocationApp/public;
+    add_header Permissions-Policy "geolocation 'none'; camera 'none'; speaker 'none';";
+    add_header X-Content-Type-Options nosniff;
+    # add_header Content-Security-Policy "default-src 'self'; font-src *;img-src * data:; script-src *; style-src *";
+    add_header X-Frame-Options "SAMEORIGIN";
+    # add_header Content-Security-Policy "default-src 'self';" always;
+    # add_header Content-Security-Policy "default-src 'self';" always;
+
+    add_header Feature-Policy "camera 'none'; microphone 'none'; geolocation 'none'" always;
+
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+
+    ssl_certificate /etc/nginx/ssl/nginx-selfsigned.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx-selfsigned.key;
+    ssl_prefer_server_ciphers on;
+    ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers "HIGH:!aNULL:!MD5 or HIGH:!aNULL:!MD5:!3DES";
+
+
+    if ($request_method ~ ^(PATCH|TRACE)$) {
+        return 405;
+    }
+
+    location ~ /\.ht { deny all; ssi off;
+        include /etc/nginx/conf.d/headers.conf;
+
+        proxy_hide_header X-Powered-By;
+        proxy_hide_header Server;
+        proxy_cookie_path / "/; HTTPOnly; Secure;HttpOnly; SameSite=strict";
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        proxy_cookie_path / "/; HTTPOnly; Secure";
+
+
+}
+location /storage {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+
+    location ~ /\.xml {
+        deny all;
+        ssi off;
+        include /etc/nginx/conf.d/headers.conf;
+
+        proxy_hide_header X-Powered-By;
+        proxy_hide_header Server;
+        proxy_cookie_path / "/; HTTPOnly; Secure;HttpOnly; SameSite=strict";
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        proxy_cookie_path / "/; HTTPOnly; Secure";
+
+
+
+    }
+
+    location / {
+        ssi off;
+        # add_header Content-Security-Policy "default-src 'self';" always;
+        include /etc/nginx/conf.d/headers.conf;
+
+        proxy_hide_header X-Powered-By;
+        proxy_hide_header Server;
+        proxy_cookie_path / "/; HTTPOnly; Secure;HttpOnly; SameSite=strict";
+
+        try_files $uri $uri/ /index.php?$query_string;
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        proxy_cookie_path / "/; HTTPOnly; Secure";
+
+    }
+
+    location ~ \.php$ {
+
+        ssi off;
+        include /etc/nginx/conf.d/headers.conf;
+
+        proxy_hide_header X-Powered-By;
+        proxy_hide_header Server;
+
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass 172.30.0.2:9901;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        proxy_cookie_path / "/; HTTPOnly; Secure;HttpOnly; SameSite=strict";
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        proxy_cookie_path / "/; HTTPOnly; Secure";
+
+
+
+    }
+
+
+
+    location /https/ {
+        ssi off;
+        include /etc/nginx/conf.d/headers.conf;
+
+        proxy_pass http://web_backend;
+        fastcgi_pass 172.30.0.2:9901;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+
+        proxy_hide_header X-Powered-By;
+        proxy_hide_header Server;
+        proxy_cookie_path / "/; HTTPOnly; Secure;HttpOnly; SameSite=strict";
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        proxy_cookie_path / "/; HTTPOnly; Secure";
+
+
+
+     }
+
+    location ~ \.php$ {
+        ssi off;
+        include /etc/nginx/conf.d/headers.conf;
+
+        # proxy_pass http://172.21.0.2:9901/;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # proxy_hide_header X-Powered-By;
+        # proxy_hide_header Server;
+        proxy_cookie_path / "/; HTTPOnly; Secure; HttpOnly; SameSite=strict";
+        # proxy_redirect http://172.21.0.2:9901/ $scheme://$http_host/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        # proxy_set_header Connection $connection_upgrade;
+        proxy_read_timeout 300;
+        proxy_buffering off;
+        fastcgi_pass 172.30.0.2:9901;
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        proxy_cookie_path / "/; HTTPOnly; Secure";
+
+
+
+    }
+
+
+    include /etc/nginx/conf.d/headers.conf;
+
+ }
+
+

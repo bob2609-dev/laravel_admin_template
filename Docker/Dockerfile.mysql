@@ -1,0 +1,33 @@
+FROM mysql/mysql-server:latest
+
+RUN mkdir /var/www
+RUN mkdir /var/www/html
+RUN mkdir /var/www/html/mysql
+
+# COPY ./Docker/doa_db_bak.sql  /var/www/html/mysql/doa_db_bak.sql
+# COPY ./Docker/db_restore.sh  /var/www/html/mysql/db_restore.sh
+
+COPY ./Docker/init.sql /data/application/init.sql
+
+COPY ./Docker/mysqld.cnf /etc/my.cnf
+
+RUN chmod 644 /etc/my.cnf
+
+
+
+
+WORKDIR /var/www/html/mysql/db/
+
+
+COPY ./Docker/db /var/www/html/mysql/db
+
+RUN sh /var/www/html/mysql/db_restore.sh
+
+
+RUN cd /var/www/html/mysql/db
+WORKDIR /var/www/html/mysql/db/
+
+# CMD  ["sh", "/var/www/html/mysql/db_restore.sh"]
+CMD  ["sh", "db_restore.sh","chmod", "644 etc/my.cnf"]
+
+# RUN mysql -u root -p doa_db2 <  /var/www/html/mysql/doa_db_bak.sql

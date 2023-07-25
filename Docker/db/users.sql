@@ -1,0 +1,2 @@
+insert into MY_TABLE (id, name, email, email_verified_at, password, two_factor_secret, two_factor_recovery_codes, two_factor_confirmed_at, remember_token, current_team_id, profile_photo_path, created_at, updated_at)
+values  (1, 'Bob Mwaimu', 'bobMwaimu@relocation.co.tz', null, '$2y$10$3puO2EN382T5..LLnmpCHOTLrmFeOckHgLPG08BOPnxjgssARauVu', null, null, null, null, null, null, '2023-02-15 16:51:33', '2023-02-15 16:51:33');
