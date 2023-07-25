@@ -1,28 +1,28 @@
 version: "3.9"
 
 services:
-    ra:
+    app:
         build:
             context: .
             dockerfile: ./Docker/app.Dockerfile
             args:
                 WWWGROUP: "${WWWGROUP}"
                 uid: ${UID}
-        container_name: ra
+        container_name: app
         restart: always
         tty: true
         dns:
             - 8.8.8.8
             - 8.8.4.4
-            - 172.30.0.1
+            - 172.35.0.1
         ports:
-            - "8899:80"
-            - 9002:9000
+            - "8900:80"
+            - 9005:9000
 
         environment:
             SERVICE_NAME: reloacationApp
         volumes:
-            - "/var/www/html/relocationApp/:/var/www/html/relocationApp"
+            - "/var/www/html/laravel_admin_template/:/var/www/html/laravel_admin_template"
             - './shared/custom.php.ini:/usr/local/etc/php/conf.d/custom.ini'
 
         extra_hosts:
@@ -30,29 +30,29 @@ services:
 
         networks:
             default:
-                ipv4_address: 172.30.0.2
+                ipv4_address: 172.35.0.2
         depends_on:
             # - ra_mongodb
-            - ra_mysql
+            - app_mysql
         links:
             # - ra_mongodb
-            - ra_mysql
+            - app_mysql
 
-    ra_mysql:
+    app_mysql:
         restart: always
         # image: mysql:latest
-        container_name: ra_mysql
+        container_name: app_mysql
         build:
             dockerfile: ./Docker/mysql.Dockerfile
             context: .
         environment:
             MYSQL_ROOT_USER: root
             MYSQL_ROOT_PASSWORD: Bupe0617!&
-            MYSQL_DATABASE: relocation
+            MYSQL_DATABASE: my_db
             MYSQL_USER: dc_user
             MYSQL_PASSWORD: BlackOPS269*^
         ports:
-            - "3311:3306"
+            - "3313:3306"
         command: --init-file /data/application/init.sql
         volumes:
             - ./Docker/mysql_data:/var/lib/mysql
@@ -64,46 +64,46 @@ services:
 
         networks:
             default:
-                ipv4_address: 172.30.0.11
+                ipv4_address: 172.35.0.11
 
-    ra_mongodb:
-        build:
-            context: .
-            dockerfile: ./Docker/mongo.Dockerfile
+    # ra_mongodb:
+    #     build:
+    #         context: .
+    #         dockerfile: ./Docker/mongo.Dockerfile
 
-        container_name: ra_mongodb
-        restart: always
-        environment:
-            MONGO_INITDB_DATABASE: laravel
-            MONGO_INITDB_ROOT_USERNAME: root
-            MONGO_INITDB_ROOT_PASSWORD: root
-        ports:
-            - "27017:27017"
-        volumes:
-          - ./Docker/mongod.conf:/etc/mongod.conf
-          - ./Docker/mongo/db:/var/lib/mongodb
-          - ./Docker/mongo/log/:/var/log/mongodb/
-        command: [--auth]
+    #     container_name: ra_mongodb
+    #     restart: always
+    #     environment:
+    #         MONGO_INITDB_DATABASE: laravel
+    #         MONGO_INITDB_ROOT_USERNAME: root
+    #         MONGO_INITDB_ROOT_PASSWORD: root
+    #     ports:
+    #         - "27017:27017"
+    #     volumes:
+    #       - ./Docker/mongod.conf:/etc/mongod.conf
+    #       - ./Docker/mongo/db:/var/lib/mongodb
+    #       - ./Docker/mongo/log/:/var/log/mongodb/
+    #     command: [--auth]
 
-        networks:
-            default:
-                ipv4_address: 172.30.0.12
+    #     networks:
+    #         default:
+    #             ipv4_address: 172.35.0.12
 
     #Nginx Service
-    ra_nginx:
+    app_nginx:
         build:
             context: .
             dockerfile: ./Docker/Dockerfile.nginx
 
-        container_name: ra_nginx
+        container_name: app_nginx
         restart: always
         tty: true
         dns:
             - 8.8.8.8
             - 8.8.4.4
-            - 172.30.0.1
+            - 172.35.0.1
         ports:
-            - "9003:80"
+            - "9004:80"
             # - "7443:443"
         volumes:
             #            - 'ca_portal-data:/var/www/html'
@@ -111,7 +111,7 @@ services:
             - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
             - "./nginx/headers.conf:/etc/nginx/headers.conf"
             - ./nginx/ssl/:/etc/nginx/ssl/
-            - "/var/www/html/relocationApp/:/var/www/html/relocationApp"
+            - "/var/www/html/laravel_admin_template/:/var/www/html/laravel_admin_template"
             # - './ldap.conf:/etc/ldap/ldap.conf'
             # - './ldap.conf:/etc/openldap/ldap.conf'
             # - './ca_cert_1.pem:/etc/ssl/certs/ca.pem'
@@ -119,9 +119,9 @@ services:
             - "host.docker.internal:host-gateway"
         networks:
             default:
-                ipv4_address: 172.30.0.6
+                ipv4_address: 172.35.0.6
 
 networks:
     default:
         external:
-            name: relocation_net
+            name: my_local_net
